@@ -9,7 +9,7 @@ using namespace std;
 
 double fI(double x)
 { 
-    return (2/M_PI)*pow(M_E, -pow(x, 2)); 
+    return (2/sqrt(M_PI))*pow(M_E, -pow(x, 2)); 
 } 
 
 int main(int argc, char* argv[]) 
