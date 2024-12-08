@@ -1,14 +1,12 @@
 #include <iostream>
-#include <cmath>
-#include <chrono>
 
 using namespace std;
-using namespace std::chrono;
 
 double* mvMultiply(double** matrix, double* vector, int row, int col);
 void Jacobi(double** matrix, double* vector, double* solvect, int matsize, double TOL, int maxIter);
-void printMatrix(double** matrix, int size);
+
 void printVector(double* vector, int size);
+void printMatrix(double** matrix, int size);
 
 void Jacobi(double** matrix, double* vector, double* solvect, int matsize, double TOL, int maxIter)
 {
@@ -125,27 +123,24 @@ double* mvMultiply(double** matrix, double* vector, int row, int col)
     return solVect;
 }
 
-
-void printMatrix(double** matrix, int size)
-{
-    cout << "Matrix: " << endl << endl;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            cout << matrix[i][j] << " ";
-        }
-
-        cout << endl << endl;;
-    }
-}
-
 void printVector(double* vector, int size)
 {
-    cout << "Vector: " << endl << endl;
+
+    cout << "Vector: " << endl;
     for (int i = 0; i < size; i++)
     {
         cout << vector[i] << endl;
     }
-    cout << endl;
+}
+
+void printMatrix(double** matrix, int row, int col)
+{
+    cout << "Matrix: " << endl;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            cout << matrix[i][j] << endl;
+        }
+    }
 }

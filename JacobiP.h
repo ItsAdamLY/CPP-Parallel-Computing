@@ -1,16 +1,12 @@
 #include <iostream>
-#include <iomanip>
-#include <SCmathlib.h>
 #include <mpi.h>
 
 using namespace std;
 
-const int matsize = 9; // N = 9: h = 0.1
-
 double* mvMultiplyP(double** matrix, double* vector, int row, int col, int rank, int nodesize);
 void JacobiP(double** matrix, double* vector, double* solvect, int matsize, int rank, int nodesize, double TOL, int maxIter);
-void printMatrix(double** matrix, int size);
-void printVector(double* vector, int size);
+void printVectorP(double* vector, int size, int rank);
+void printMatrixP(double** matrix, int row, int col, int rank);
 
 void JacobiP(double** matrix, double* vector, double* solvect, int matsize, int rank, int nodesize, double TOL, int maxIter)
 {
@@ -100,7 +96,7 @@ void JacobiP(double** matrix, double* vector, double* solvect, int matsize, int 
     if (rank == 0)
     {
         cout << "Solution ";
-        printVector(solvect, matsize);
+        printVectorP(solvect, matsize, rank);
         cout << "Achieved in: " << iter << " iterations." << endl;
     }
 
@@ -117,8 +113,6 @@ void JacobiP(double** matrix, double* vector, double* solvect, int matsize, int 
 
 double* mvMultiplyP(double** matrix, double* vector, int row, int col, int rank, int nodesize)
 {
-    MPI_Status status;
-
     int localNRow = row/nodesize;
 
     double* flatMatrix = new double[row*col];
@@ -220,26 +214,29 @@ double* mvMultiplyP(double** matrix, double* vector, int row, int col, int rank,
     return prodVect;
 }
 
-void printMatrix(double** matrix, int size)
+void printVectorP(double* vector, int size, int rank)
 {
-    cout << "Matrix: " << endl << endl;
-    for (int i = 0; i < size; i++)
+    if (rank == 0)
     {
-        for (int j = 0; j < size; j++)
+        cout << "Vector: " << endl;
+        for (int i = 0; i < size; i++)
         {
-            cout << matrix[i][j] << " ";
+            cout << vector[i] << endl;
         }
-
-        cout << endl << endl;;
     }
 }
 
-void printVector(double* vector, int size)
+void printMatrixP(double** matrix, int row, int col, int rank)
 {
-    cout << "Vector: " << endl << endl;
-    for (int i = 0; i < size; i++)
-    {
-        cout << vector[i] << endl;
+    if (rank == 0)
+    { 
+        cout << "Matrix: " << endl;
+        for (int i = 0; i < row; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                cout << matrix[i][j] << endl;
+            }
+        }
     }
-    cout << endl;
 }
